@@ -1,49 +1,38 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-# 
+
 unless Vagrant.has_plugin?("vagrant-vbguest")
     raise Vagrant::Errors::VagrantError.new, "Plugin missing: vagrant-vbguest"
 end
 
 Vagrant.configure("2") do |config|
 
-  # Number of nodes to provision
-  # Please note that you will need to create a new Shared-Node folder
-  # if you want to add more nodes
-  numNodes = 4 
+    # Create the box based on good old Debian 8
+    config.vm.box = "debian/wheezy64"
 
-  # IP Address Base for private network
-  ipAddrPrefix = "192.168.148.10"
+    # Setting the hostname
+    config.vm.hostname = "bestshift.dev"
 
-  # Define Number of RAM for each node
-  config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--memory", 1024]
-  end
+    # An SSH Agend is never wrong
+    config.ssh.forward_agent = true
 
-  # Provision the server with neccessary packages
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "manifests"
-    puppet.manifest_file = "default.pp"
-    puppet.module_path = "modules"
-  end
-
-  # Download the initial the box with good old Debian
-  # config.vm.box_url = "https://atlas.hashicorp.com/debian/boxes/jessie64/versions/8.2.2/providers/virtualbox.box"
-
-  # An SSH-Agent is never a bad idea
-  config.ssh.forward_agent = true
-
-  # Provision Config for each of the nodes
-  1.upto(numNodes) do |num|
-    nodeName = ("bs-node" + num.to_s).to_sym
-    config.vm.define nodeName do |node|
-      node.vm.box = "debian/jessie64"
-      node.vm.hostname = "bestshift-node" + num.to_s + ".dev"
-      #node.vm.synced_folder ".", "/var/www", {:mount_options => ['dmode=777','fmode=777']}
-      node.vm.network :private_network, ip: ipAddrPrefix + num.to_s
-      node.vm.provider "virtualbox" do |v|
-        v.name = "BestShift Server Node " + num.to_s
-      end
+    # Configure RAM used and enable the DNS Resolver
+    config.vm.provider "virtualbox" do |v|
+        v.name = "BestShift CPOS"
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--memory", 512]
     end
-  end
+        
+    
+    # Forward a port from the guest to the host, which allows for outside
+    # computers to access the VM, whereas host only networking does not.
+    config.vm.network "forwarded_port", guest: 80, host: 8080
+    
+    # Share an additional folder to the guest VM. The first argument is
+    # an identifier, the second is the path on the guest to mount the
+    # folder, and the third is the path on the host to the actual folder.
+    config.vm.synced_folder "data", "/vagrant"
+    
+    # Enable provisioning with a shell script.
+    config.vm.provision :shell, :path => "bootstrap.sh"
 end
