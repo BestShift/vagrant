@@ -1,6 +1,6 @@
 function apt-install {
     for pkg in $@; do
-        echo -e "[APT-GET] Installing package $pkg..."
+        echo -e "$(tput setaf 2)[APT-GET] Installing package $pkg...(tput sgr 0)"
         sudo apt-get install -yq $pkg
     done
 }

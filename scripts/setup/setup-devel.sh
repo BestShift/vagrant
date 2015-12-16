@@ -17,8 +17,11 @@ source ./scripts/setup-redis.sh
 # Setup and install python related dependencies
 source ./scripts/setup-buildessential.sh
 source ./scripts/setup-python.sh
+source ./scripts/setup-java.sh
 
 # Setup BestShift (to come)
 #source ./scripts/setup-frontend.sh
 #source ./scripts/setup-backend.sh
 
+# Cleanup
+source ./scripts/cleanup.sh
