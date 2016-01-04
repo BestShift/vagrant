@@ -17,7 +17,7 @@ if [ ! -e ~/.setup/postgresql ]; then
         postgresql-doc-9.3 postgresql-server-dev-9.3
 
     sudo -u postgres createuser --superuser $USER &> /dev/null
-    sudo -u postgres createdb $USER &> /dev/null
+    sudo -u postgres createdb bestshift &> /dev/null
 
     touch ~/.setup/postgresql
 fi
