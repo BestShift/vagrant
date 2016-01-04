@@ -1,2 +1,10 @@
 ### Vagrant ###
 .vagrant/
+
+### VM Specific ###
+scripts/setup/buildessential
+scripts/setup/circus
+scripts/setup/java
+scripts/setup/postgresql
+scripts/setup/redis
+scripts/setup/redis-stable/

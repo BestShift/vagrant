@@ -1,5 +1,5 @@
 #!/bin/bash
 
-apt-get autoclean
-apt-get clean
-apt-get autoremove
+sudo apt-get -y autoclean
+sudo apt-get -y clean
+sudo apt-get -y autoremove

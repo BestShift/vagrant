@@ -17,6 +17,8 @@ def configure(config)
 	config.vm.box = "trusty64"
 	config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
 	config.vm.hostname = "bestshift.dev"
+	config.vm.define "bscpos" do |bscpos|
+  	end
 
 	# Create a forwarded port mapping which allows access to a specific port
 	# within the machine from a port on the host machine. In the example below,
