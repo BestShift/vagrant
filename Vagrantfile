@@ -39,6 +39,7 @@ def configure(config)
 	# the path on the guest to mount the folder. And the optional third
 	# argument is a set of non-required options.
 	config.vm.synced_folder "./data", "/home/vagrant/data"
+	config.vm.synced_folder "./scripts/tools", "/home/vagrant/tools"
 	config.vm.synced_folder "./scripts/setup", "/home/vagrant/.setup"
 
 	# Provider-specific configuration so you can fine-tune various
